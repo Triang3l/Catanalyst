@@ -1,0 +1,56 @@
+workspace("Catanalyst");
+   location("Build");
+   configurations({
+      "Debug",
+      "Release",
+   });
+   platforms({"Windows"});
+   systemversion("latest");
+   characterset("Unicode");
+   architecture("x86_64");
+
+filter("configurations:Debug");
+   defines({"_DEBUG"});
+   symbols("On");
+filter("configurations:Release");
+   defines({"NDEBUG"});
+   optimize("On");
+filter({});
+
+project("Detours");
+   kind("StaticLib");
+   language("C++");
+   defines({
+      "WIN32_LEAN_AND_MEAN",
+      "_WIN32_WINNT=0x501",
+      "_USING_V110_SDK71_",
+   });
+   files({
+      "Detours/src/creatwth.cpp",
+      "Detours/src/detours.cpp",
+      "Detours/src/detours.h",
+      "Detours/src/detver.h",
+      "Detours/src/disasm.cpp",
+      "Detours/src/disolarm.cpp",
+      "Detours/src/disolarm64.cpp",
+      "Detours/src/disolia64.cpp",
+      "Detours/src/disolx64.cpp",
+      "Detours/src/disolx86.cpp",
+      "Detours/src/image.cpp",
+      "Detours/src/modules.cpp",
+   });
+
+project("Catanalyst");
+   kind("ConsoleApp");
+   language("C++");
+   cdialect("C99");
+   cppdialect("C++17");
+   files({
+      "Catanalyst/**.c",
+      "Catanalyst/**.cpp",
+      "Catanalyst/**.h",
+   });
+   links({
+      "d3dcompiler",
+      "Detours",
+   });
